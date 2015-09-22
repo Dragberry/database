@@ -30,6 +30,7 @@
 	<!-- Folders for automatic search bean (@Component, @Service) -->
 	<context:component-scan base-package="by.bsuir.drahun.database.dao"/>
 	<context:component-scan base-package="by.bsuir.drahun.database.business"/>
+    <context:component-scan base-package="by.bsuir.drahun.database.i18n"/>
 
 	<tx:annotation-driven />
 	
