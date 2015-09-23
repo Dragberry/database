@@ -8,6 +8,11 @@ import java.util.Map;
 
 public class ProductOfferQuery {
 	
+	public static final String PRODUCT_TITLE = "Product title";
+	public static final String COST = "Cost";
+	public static final String QUANTITY = "Quantity";
+	public static final String PRODUCT_CODE = "Product code";
+	
 	private Map<String, SortOrder> orders = new LinkedHashMap<String, SortOrder>();
 	
 	private List<SingleCondition> conditions = new ArrayList<SingleCondition>();

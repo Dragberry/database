@@ -52,7 +52,11 @@ public class SearchPanel extends JPanel {
 
 	private ProductOfferQuery offerQuery = new ProductOfferQuery();
 
-	private String[] fields = { "Product title", "Product code", "Cost", "Quantity" };
+	private String[] fields = { 
+			ProductOfferQuery.PRODUCT_CODE, 
+			ProductOfferQuery.PRODUCT_TITLE, 
+			ProductOfferQuery.COST, 
+			ProductOfferQuery.QUANTITY };
 
 	public SearchPanel() {
 		super();

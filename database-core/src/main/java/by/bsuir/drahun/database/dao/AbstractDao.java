@@ -87,6 +87,16 @@ public abstract class AbstractDao<E extends Serializable> {
 	protected String wrap(String str) {
 		return new StringBuilder(PERCENT_QUOTE).append(str).append(PERCENT_QUOTE).toString();
 	}
+	
+	/**
+	 * Wrap string in percent quotes: %string%
+	 * 
+	 * @param str
+	 * @return
+	 */
+	protected String wrapEnd(String str) {
+		return new StringBuilder(str).append(PERCENT_QUOTE).toString();
+	}
 
 	/**
 	 * Null-safe add WHERE clause to query.
