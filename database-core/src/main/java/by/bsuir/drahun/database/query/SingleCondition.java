@@ -48,7 +48,7 @@ public class SingleCondition implements Serializable{
 	
 	@Override
 	public String toString() {
-		return operator.toString() + " " + field + " " + condition.getValue() + " " + value + " "; 
+		return (operator == null ? "" : operator.toString()) + " " + field + " " + condition.getValue() + " " + value + " "; 
 	}
 	
 }

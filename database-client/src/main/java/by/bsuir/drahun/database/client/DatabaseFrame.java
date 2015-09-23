@@ -44,7 +44,7 @@ public class DatabaseFrame extends JFrame {
 	public void init() {
 		context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		fetchInitializationData();
-		setMinimumSize(new Dimension(640, 480));
+		setMinimumSize(new Dimension(1024, 768));
 		setTitle("Database Client");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 

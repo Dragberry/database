@@ -28,4 +28,14 @@ public class ProductOfferQuery {
 		return Collections.unmodifiableList(conditions);
 	}
 
+	public void removeLastCondition() {
+		if (!conditions.isEmpty()) {
+			conditions.remove(conditions.size() - 1);
+		}
+	}
+	
+	public boolean hasConditions() {
+		return !conditions.isEmpty();
+	}
+
 }
