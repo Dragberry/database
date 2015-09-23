@@ -2,19 +2,17 @@ package by.bsuir.drahun.database.query;
 
 import java.io.Serializable;
 
-import javax.persistence.metamodel.SingularAttribute;
-
-public class SingleCondition<X, T> implements Serializable{
+public class SingleCondition implements Serializable{
 	
 	private static final long serialVersionUID = -5462690883769505315L;
 
 	private Operator operator;
 	
-	private SingularAttribute<X, T> field;
+	private String field;
 	
 	private Condition condition;
 	
-	private T value;
+	private String value;
 
 	public Operator getOperator() {
 		return operator;
@@ -24,11 +22,11 @@ public class SingleCondition<X, T> implements Serializable{
 		this.operator = operator;
 	}
 
-	public SingularAttribute<X, T> getField() {
+	public String getField() {
 		return field;
 	}
 
-	public void setField(SingularAttribute<X, T> field) {
+	public void setField(String field) {
 		this.field = field;
 	}
 
@@ -40,12 +38,17 @@ public class SingleCondition<X, T> implements Serializable{
 		this.condition = condition;
 	}
 
-	public T getValue() {
+	public String getValue() {
 		return value;
 	}
 
-	public void setValue(T value) {
+	public void setValue(String value) {
 		this.value = value;
+	}
+	
+	@Override
+	public String toString() {
+		return operator.toString() + " " + field + " " + condition.getValue() + " " + value + " "; 
 	}
 	
 }

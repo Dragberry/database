@@ -25,6 +25,7 @@ import by.bsuir.drahun.database.business.OfferService;
 import by.bsuir.drahun.database.domain.ProductOffer;
 import by.bsuir.drahun.database.model.ProductBean;
 import by.bsuir.drahun.database.model.TableModel;
+import by.bsuir.drahun.database.query.ProductOfferQuery;
 
 public class DatabaseFrame extends JFrame {
 
@@ -72,13 +73,25 @@ public class DatabaseFrame extends JFrame {
 	}
 
 	private void fetchInitializationData() {
-		doSearch(null);
+		String query = null;
+		doSearch(query);
+	}
+	
+	private void doSearch(ProductOfferQuery query) {
+		resultList = new ArrayList<ProductBean>();
+		OfferService offerService = getContext().getBean(OfferService.class);
+		List<ProductOffer> offers = offerService.fetchOffers(query);
+		convertResult(offers, resultList);
 	}
 
 	private void doSearch(String query) {
 		resultList = new ArrayList<ProductBean>();
 		OfferService offerService = getContext().getBean(OfferService.class);
 		List<ProductOffer> offers = offerService.fetchOffers(query);
+		convertResult(offers, resultList);
+	}
+
+	protected void convertResult(List<ProductOffer> offers, List<ProductBean> resultList) {
 		for (ProductOffer offer : offers) {
 			ProductBean bean = new ProductBean();
 			bean.setProductCode(offer.getProduct().getProductCode());
@@ -98,6 +111,23 @@ public class DatabaseFrame extends JFrame {
 				resultTable.setModel(new TableModel(resultList));
 				resultPanel.repaint();
 				repaint();
+			}
+		});
+		
+		getSearchPanel().getSearchBtn().addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				doSearch(getSearchPanel().getOfferQuery());
+				resultTable.setModel(new TableModel(resultList));
+				resultPanel.repaint();
+				repaint();
+			}
+		});
+		
+        getSearchPanel().getAddConditionBtn().addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				getSearchPanel().addCondtion();
 			}
 		});
 	}

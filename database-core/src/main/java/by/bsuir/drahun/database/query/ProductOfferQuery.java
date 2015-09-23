@@ -10,9 +10,9 @@ public class ProductOfferQuery {
 	
 	private Map<String, SortOrder> orders = new LinkedHashMap<String, SortOrder>();
 	
-	private List<SingleCondition<?,?>> conditions = new ArrayList<SingleCondition<?,?>>();
+	private List<SingleCondition> conditions = new ArrayList<SingleCondition>();
 	
-	public void addCondition(SingleCondition<?,?> condition) {
+	public void addCondition(SingleCondition condition) {
 		conditions.add(condition);
 	}
 	
@@ -24,7 +24,7 @@ public class ProductOfferQuery {
 		return Collections.unmodifiableMap(orders);
 	}
 	
-	public List<SingleCondition<?,?>> getConditions() {
+	public List<SingleCondition> getConditions() {
 		return Collections.unmodifiableList(conditions);
 	}
 

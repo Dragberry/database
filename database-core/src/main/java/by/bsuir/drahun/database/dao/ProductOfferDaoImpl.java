@@ -33,7 +33,7 @@ public class ProductOfferDaoImpl extends AbstractDao<ProductOffer> implements Pr
 		Root<ProductOffer> rootProduct = queryProduct.from(ProductOffer.class);
 		Join<ProductOffer, Product> joinOfferProduct = rootProduct.join(ProductOffer_.product, JoinType.INNER);
 		
-		for (SingleCondition<?, ?> condition : query.getConditions()) {
+		for (SingleCondition condition : query.getConditions()) {
 			
 		}
 		

@@ -28,7 +28,7 @@ public class OfferServiceBean implements OfferService {
 	}
 
 	public List<ProductOffer> fetchOffers(ProductOfferQuery query) {
-		throw new UnsupportedOperationException("Not implemented!");
+		return productOfferDao.fetchProductOffers(query);
 	}
 
 	public List<ProductOffer> fetchOffers(String query) {
