@@ -14,6 +14,8 @@
 
 	<!-- Configuration defining views files -->
 	
+	<import resource="classpath:applicationContext.xml"/>
+	
 	<context:component-scan base-package="by.bsuir.drahun.database.controller" />
  
 	<bean id="viewResolver"
