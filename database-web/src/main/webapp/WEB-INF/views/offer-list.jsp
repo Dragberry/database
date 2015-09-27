@@ -12,8 +12,15 @@
 			$("#addConditionButton").click(function() {
 					$.ajax({
 			            url : 'add-condition',
+			            type: 'GET',
+			            dataType: 'json',
+			            contentType: 'application/json',
+			            mimeType: 'application/json',
 			            data: {
-			            	"operator" : $("operatot").val()
+			            	operator : $("#operator").val(),
+			            	field : $("#field").val(),
+			            	condition : $("#condition").val(),
+			            	value : $("#value").val()
 			            },
 			            success : function(data) {
 			            	console.log(data);
@@ -52,7 +59,7 @@
 				<option>EQUALS</option>
 				<option>NOT_EQUALS</option>
 			</select>
-			<input type="text" name="value" form="add-condition"/> 
+			<input type="text" id="value" form="add-condition"/> 
 			<input id="addConditionButton" type="button" value="Add" form="add-condition" />
 			<input type="submit" value="Remove" form="remove-condition" />
 		</form>

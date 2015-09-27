@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class AddConditionEntity {
+public class AddConditionResult {
 	
 	@XmlElement
 	private String resultQuery;

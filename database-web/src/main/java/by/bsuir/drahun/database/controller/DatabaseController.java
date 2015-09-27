@@ -1,12 +1,7 @@
 package by.bsuir.drahun.database.controller;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,21 +10,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-
 import by.bsuir.drahun.database.business.OfferService;
 import by.bsuir.drahun.database.domain.ProductOffer;
-import by.bsuir.drahun.database.json.AddConditionEntity;
+import by.bsuir.drahun.database.json.AddConditionResult;
+import by.bsuir.drahun.database.query.Condition;
+import by.bsuir.drahun.database.query.Operator;
 import by.bsuir.drahun.database.query.ProductOfferQuery;
+import by.bsuir.drahun.database.query.SingleCondition;
 
 @Controller
 @Scope("session")
@@ -37,6 +30,8 @@ import by.bsuir.drahun.database.query.ProductOfferQuery;
 public class DatabaseController implements Serializable {
 	
 	private static final long serialVersionUID = 7372736988583245713L;
+	
+	private ProductOfferQuery offerQuery = new ProductOfferQuery();
 	
 	@Autowired
 	private OfferService offerServise;
@@ -64,10 +59,32 @@ public class DatabaseController implements Serializable {
 	}
 	
 	@RequestMapping(value = "/add-condition", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE) 
-	public ResponseEntity<AddConditionEntity> addCondition() {
-		AddConditionEntity entity = new AddConditionEntity();
-		entity.setResultQuery("gddhd");
-		return new ResponseEntity<AddConditionEntity>(entity, HttpStatus.OK);
+	public ResponseEntity<AddConditionResult> addCondition(
+			@RequestParam("operator") String operator,
+			@RequestParam("field") String field,
+			@RequestParam("condition") String condition,
+			@RequestParam("value") String value) {
+		SingleCondition sc = new SingleCondition();
+		if (!offerQuery.getConditions().isEmpty()) {
+			sc.setOperator(Operator.valueOf(operator));
+			
+		}
+		sc.setField(field);
+		sc.setCondition(Condition.valueOf(condition));
+		sc.setValue(value);
+		offerQuery.addCondition(sc);
+		
+		AddConditionResult entity = new AddConditionResult();
+		entity.setResultQuery(updateQueryString());
+		return new ResponseEntity<AddConditionResult>(entity, HttpStatus.OK);
+	}
+	
+	protected String updateQueryString() {
+		String str = "";
+		for (SingleCondition c : offerQuery.getConditions()) {
+			str += c.toString();
+		}
+		return str;
 	}
 	
 }
