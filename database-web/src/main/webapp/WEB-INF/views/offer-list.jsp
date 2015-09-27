@@ -46,8 +46,9 @@
 		<br/>
 		<form action="add-condition" method="get">
 			<select id="operator" form="add-condition">
-				<option>AND</option>
-				<option>OR</option>
+				<c:forEach var="operator" items="${operatorList}">
+					<option>${operator}</option>
+				</c:forEach>
 			</select>
 			<select id="field" form="add-condition">
 				<option>Product title</option>
@@ -56,8 +57,9 @@
 				<option>Quantity</option>
 			</select>
 			<select id="condition" form="add-condition">
-				<option>EQUALS</option>
-				<option>NOT_EQUALS</option>
+				<c:forEach var="condition" items="${conditionList}">
+					<option>${condition}</option>
+				</c:forEach>
 			</select>
 			<input type="text" id="value" form="add-condition"/> 
 			<input id="addConditionButton" type="button" value="Add" form="add-condition" />

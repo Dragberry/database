@@ -54,6 +54,8 @@ public class DatabaseController implements Serializable {
 	public ModelAndView getOfferList(ModelAndView model) {
 		List<ProductOffer> offerList = offerServise.fetchOffers(new ProductOfferQuery());
 	    model.addObject("offerList", offerList);
+	    model.addObject("operatorList", Operator.values());
+	    model.addObject("conditionList", Condition.values());
 	    model.setViewName("offer-list");
 		return model;
 	}
