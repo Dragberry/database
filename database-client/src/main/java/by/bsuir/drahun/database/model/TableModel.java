@@ -1,5 +1,6 @@
 package by.bsuir.drahun.database.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class TableModel extends AbstractTableModel {
 
 	private List<ProductBean> productList = new ArrayList<ProductBean>();
 
-	private String[] columnList = { "Product Code", "Product Title", "Cost", "Quantity" };
+	private String[] columnList = { "Product Code", "Product Title", "Cost", "Quantity", "Sum" };
 
 	public TableModel(List<ProductBean> productList) {
 		this.productList = productList;
@@ -46,6 +47,8 @@ public class TableModel extends AbstractTableModel {
 			return row.getCost().toString();
 		case 3:
 			return row.getQuantity();
+		case 4:
+			return row.getCost().multiply(new BigDecimal(row.getQuantity()));
 		default:
 			return null;
 		}

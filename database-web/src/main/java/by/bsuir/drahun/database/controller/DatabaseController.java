@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import by.bsuir.drahun.database.business.OfferService;
-import by.bsuir.drahun.database.domain.ProductOffer;
 import by.bsuir.drahun.database.json.AddConditionResult;
+import by.bsuir.drahun.database.model.ProductBean;
 import by.bsuir.drahun.database.query.Condition;
 import by.bsuir.drahun.database.query.Operator;
 import by.bsuir.drahun.database.query.ProductOfferQuery;
@@ -51,7 +51,7 @@ public class DatabaseController implements Serializable {
 	
 	@RequestMapping(value = "/search-offers", method = RequestMethod.GET, params = {"query"})
 	public ModelAndView getOfferList(@RequestParam("query") String query, ModelAndView model, HttpServletRequest request) {
-		List<ProductOffer> offerList = offerServise.fetchOffers(query);
+		List<ProductBean> offerList = offerServise.fetchOffers(query);
 	    model.addObject("offerList", offerList);
 	    model.setViewName("offer-list");
 	    model.addObject("operatorList", operators);
@@ -63,7 +63,7 @@ public class DatabaseController implements Serializable {
 	
 	@RequestMapping("/offer-list")
 	public ModelAndView getOfferList(ModelAndView model) {
-		List<ProductOffer> offerList = offerServise.fetchOffers(new ProductOfferQuery());
+		List<ProductBean> offerList = offerServise.fetchOffers(new ProductOfferQuery());
 	    model.addObject("offerList", offerList);
 	    model.addObject("operatorList", operators);
 	    model.addObject("conditionList", conditions);

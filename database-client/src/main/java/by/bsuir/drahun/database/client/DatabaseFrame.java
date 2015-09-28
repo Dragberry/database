@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -22,7 +21,6 @@ import javax.swing.JTable;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import by.bsuir.drahun.database.business.OfferService;
-import by.bsuir.drahun.database.domain.ProductOffer;
 import by.bsuir.drahun.database.model.ProductBean;
 import by.bsuir.drahun.database.model.TableModel;
 import by.bsuir.drahun.database.query.ProductOfferQuery;
@@ -78,28 +76,13 @@ public class DatabaseFrame extends JFrame {
 	}
 	
 	private void doSearch(ProductOfferQuery query) {
-		resultList = new ArrayList<ProductBean>();
 		OfferService offerService = getContext().getBean(OfferService.class);
-		List<ProductOffer> offers = offerService.fetchOffers(query);
-		convertResult(offers, resultList);
+		resultList = offerService.fetchOffers(query);
 	}
 
 	private void doSearch(String query) {
-		resultList = new ArrayList<ProductBean>();
 		OfferService offerService = getContext().getBean(OfferService.class);
-		List<ProductOffer> offers = offerService.fetchOffers(query);
-		convertResult(offers, resultList);
-	}
-
-	protected void convertResult(List<ProductOffer> offers, List<ProductBean> resultList) {
-		for (ProductOffer offer : offers) {
-			ProductBean bean = new ProductBean();
-			bean.setProductCode(offer.getProduct().getProductCode());
-			bean.setProductTitle(offer.getProduct().getProductTitle());
-			bean.setCost(offer.getCost());
-			bean.setQuantity(offer.getQuantity());
-			resultList.add(bean);
-		}
+		resultList = offerService.fetchOffers(query);
 	}
 
 	private void addActionListeners() {

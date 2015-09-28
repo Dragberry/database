@@ -80,19 +80,23 @@
 	<hr/>
 	<div>
 		<table border="1">
-			<th>No</th>
-			<th>Product code</th>
-			<th>Product title</th>
-			<th>Cost</th>
-			<th>Quantity</th>
+			<tr>
+				<th>No</th>
+				<th>Product code</th>
+				<th>Product title</th>
+				<th>Cost</th>
+				<th>Quantity</th>
+				<th>Sum</th>
+			</tr>
 	
-			<c:forEach var="offer" items="${offerList}" varStatus="status">
+			<c:forEach var="productBean" items="${offerList}" varStatus="status">
 				<tr>
 					<td>${status.index + 1}</td>
-					<td>${offer.product.productCode}</td>
-					<td>${offer.product.productTitle}</td>
-					<td>${offer.cost}</td>
-					<td>${offer.quantity}</td>
+					<td>${productBean.productCode}</td>
+					<td>${productBean.productTitle}</td>
+					<td>${productBean.cost}</td>
+					<td>${productBean.quantity}</td>
+					<td>${productBean.quantity * productBean.cost}</td>
 				</tr>
 			</c:forEach>
 		</table>
