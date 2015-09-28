@@ -23,12 +23,21 @@
 			            	value : $("#value").val()
 			            },
 			            success : function(data) {
-			            	console.log(data);
 			            	$("#resultQuery").html(data["resultQuery"]);
 			            }
 			        });
-				}		
-			);
+			});
+			
+			$("#removeConditionButton").click(function() {
+				$.ajax({
+					url : 'remove-condition',
+					type: 'DELETE',
+				 	success : function(data) {
+		            	$("#resultQuery").html(data["resultQuery"]);
+		            }
+				});
+			});	
+		
 		});
 		
 	</script>
@@ -62,12 +71,12 @@
 				</c:forEach>
 			</select>
 			<input type="text" id="value" form="add-condition"/> 
-			<input id="addConditionButton" type="button" value="Add" form="add-condition" />
-			<input type="submit" value="Remove" form="remove-condition" />
+			<input id="addConditionButton" type="button" value="Add" />
+			<input id="removeConditionButton" type="button" value="Remove" />
 		</form>
 	</div>
 	<div>
-		<span id="resultQuery"/>
+		<span id="resultQuery"></span>
 	</div>
 	<hr/>
 	<div>

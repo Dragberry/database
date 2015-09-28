@@ -60,6 +60,17 @@ public class DatabaseController implements Serializable {
 		return model;
 	}
 	
+	@RequestMapping(value = "/remove-condition", method = RequestMethod.DELETE, produces=MediaType.APPLICATION_JSON_VALUE) 
+	public ResponseEntity<AddConditionResult> addCondition() {
+		if (offerQuery.hasConditions()) {
+			offerQuery.removeLastCondition();
+		}
+		AddConditionResult entity = new AddConditionResult();
+		entity.setResultQuery(updateQueryString());
+		return new ResponseEntity<AddConditionResult>(entity, HttpStatus.OK);
+	}
+	
+	
 	@RequestMapping(value = "/add-condition", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE) 
 	public ResponseEntity<AddConditionResult> addCondition(
 			@RequestParam("operator") String operator,
