@@ -13,6 +13,8 @@ public class ProductOfferQuery {
 	public static final String QUANTITY = "Quantity";
 	public static final String PRODUCT_CODE = "Product code";
 	
+	public static final String[] FIELDS = {PRODUCT_TITLE, PRODUCT_CODE, COST, QUANTITY};
+	
 	private Map<String, SortOrder> orders = new LinkedHashMap<String, SortOrder>();
 	
 	private List<SingleCondition> conditions = new ArrayList<SingleCondition>();

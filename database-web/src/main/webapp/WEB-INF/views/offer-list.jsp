@@ -60,10 +60,9 @@
 				</c:forEach>
 			</select>
 			<select id="field" form="add-condition">
-				<option>Product title</option>
-				<option>Product code</option>
-				<option>Cost</option>
-				<option>Quantity</option>
+				<c:forEach var="field" items="${fieldList}">
+					<option>${field}</option>
+				</c:forEach>
 			</select>
 			<select id="condition" form="add-condition">
 				<c:forEach var="condition" items="${conditionList}">

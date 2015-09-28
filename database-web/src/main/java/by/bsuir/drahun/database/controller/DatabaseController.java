@@ -2,6 +2,7 @@ package by.bsuir.drahun.database.controller;
 
 import java.io.Serializable;
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,12 @@ public class DatabaseController implements Serializable {
 	
 	private ProductOfferQuery offerQuery = new ProductOfferQuery();
 	
+	private Condition[] conditions = Condition.values();
+	
+	private Operator[] operators = Operator.values();
+	
+	private String[] fields = ProductOfferQuery.FIELDS;
+	
 	@Autowired
 	private OfferService offerServise;
 	
@@ -41,11 +48,15 @@ public class DatabaseController implements Serializable {
 		
 		return "index";
 	}
+	
 	@RequestMapping(value = "/search-offers", method = RequestMethod.GET, params = {"query"})
 	public ModelAndView getOfferList(@RequestParam("query") String query, ModelAndView model, HttpServletRequest request) {
 		List<ProductOffer> offerList = offerServise.fetchOffers(query);
 	    model.addObject("offerList", offerList);
 	    model.setViewName("offer-list");
+	    model.addObject("operatorList", operators);
+	    model.addObject("conditionList", conditions);
+	    model.addObject("fieldList", fields);
 	    request.getSession().setAttribute("query", query);
 		return model;
 	}
@@ -54,8 +65,9 @@ public class DatabaseController implements Serializable {
 	public ModelAndView getOfferList(ModelAndView model) {
 		List<ProductOffer> offerList = offerServise.fetchOffers(new ProductOfferQuery());
 	    model.addObject("offerList", offerList);
-	    model.addObject("operatorList", Operator.values());
-	    model.addObject("conditionList", Condition.values());
+	    model.addObject("operatorList", operators);
+	    model.addObject("conditionList", conditions);
+	    model.addObject("fieldList", fields);
 	    model.setViewName("offer-list");
 		return model;
 	}
