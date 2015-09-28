@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
@@ -57,7 +58,22 @@ public class DatabaseController implements Serializable {
 	    model.addObject("operatorList", operators);
 	    model.addObject("conditionList", conditions);
 	    model.addObject("fieldList", fields);
+	    model.addObject("resultQuery", updateQueryString());
+	    model.addObject("isResultQueryEmpty", StringUtils.isBlank(updateQueryString()));
 	    request.getSession().setAttribute("query", query);
+		return model;
+	}
+	
+	@RequestMapping(value = "/search-offers", method = RequestMethod.GET)
+	public ModelAndView getOfferList(ModelAndView model, HttpServletRequest request) {
+		List<ProductBean> offerList = offerServise.fetchOffers(offerQuery);
+	    model.addObject("offerList", offerList);
+	    model.setViewName("offer-list");
+	    model.addObject("operatorList", operators);
+	    model.addObject("conditionList", conditions);
+	    model.addObject("fieldList", fields);
+	    model.addObject("resultQuery", updateQueryString());
+	    model.addObject("isResultQueryEmpty", StringUtils.isBlank(updateQueryString()));
 		return model;
 	}
 	
@@ -68,6 +84,7 @@ public class DatabaseController implements Serializable {
 	    model.addObject("operatorList", operators);
 	    model.addObject("conditionList", conditions);
 	    model.addObject("fieldList", fields);
+	    model.addObject("resultQuery", updateQueryString());
 	    model.setViewName("offer-list");
 		return model;
 	}
@@ -79,6 +96,7 @@ public class DatabaseController implements Serializable {
 		}
 		AddConditionResult entity = new AddConditionResult();
 		entity.setResultQuery(updateQueryString());
+		entity.setIsQueryEmpty(offerQuery.hasConditions());
 		return new ResponseEntity<AddConditionResult>(entity, HttpStatus.OK);
 	}
 	
@@ -92,7 +110,6 @@ public class DatabaseController implements Serializable {
 		SingleCondition sc = new SingleCondition();
 		if (!offerQuery.getConditions().isEmpty()) {
 			sc.setOperator(Operator.valueOf(operator));
-			
 		}
 		sc.setField(field);
 		sc.setCondition(Condition.valueOf(condition));
@@ -101,6 +118,7 @@ public class DatabaseController implements Serializable {
 		
 		AddConditionResult entity = new AddConditionResult();
 		entity.setResultQuery(updateQueryString());
+		entity.setIsQueryEmpty(offerQuery.hasConditions());
 		return new ResponseEntity<AddConditionResult>(entity, HttpStatus.OK);
 	}
 	

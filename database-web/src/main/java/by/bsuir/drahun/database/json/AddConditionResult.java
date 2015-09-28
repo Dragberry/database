@@ -8,6 +8,9 @@ public class AddConditionResult {
 	
 	@XmlElement
 	private String resultQuery;
+	
+	@XmlElement
+	private Boolean isQueryEmpty;
 
 	public String getResultQuery() {
 		return resultQuery;
@@ -15,6 +18,14 @@ public class AddConditionResult {
 
 	public void setResultQuery(String resultQuery) {
 		this.resultQuery = resultQuery;
+	}
+
+	public Boolean getIsQueryEmpty() {
+		return isQueryEmpty;
+	}
+
+	public void setIsQueryEmpty(Boolean isQueryEmpty) {
+		this.isQueryEmpty = isQueryEmpty;
 	}
 	
 }

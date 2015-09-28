@@ -9,6 +9,19 @@
 <body>
 	<script>
 		$( document ).ready(function() {
+			$("#addConditionButton").prop("disabled", true);
+			$("#removeConditionButton").prop("disabled", ${isResultQueryEmpty});
+			$("#operator").prop("disabled", ${isResultQueryEmpty});
+			console.log("1");
+			
+			$("#value").keyup(function() {
+				  if ($("#value").val()) {
+					  $("#addConditionButton").prop("disabled", false);
+				  } else {
+					  $("#addConditionButton").prop("disabled", true);
+				  }
+			});
+			
 			$("#addConditionButton").click(function() {
 					$.ajax({
 			            url : 'add-condition',
@@ -23,6 +36,9 @@
 			            	value : $("#value").val()
 			            },
 			            success : function(data) {
+			            	console.log(data["isQueryEmpty"]);
+			            	$("#removeConditionButton").prop("disabled", !data["isQueryEmpty"]);
+							$("#operator").prop("disabled", !data["isQueryEmpty"]);
 			            	$("#resultQuery").html(data["resultQuery"]);
 			            }
 			        });
@@ -33,6 +49,8 @@
 					url : 'remove-condition',
 					type: 'DELETE',
 				 	success : function(data) {
+				 		$("#removeConditionButton").prop("disabled", !data["isQueryEmpty"]);
+						$("#operator").prop("disabled", !data["isQueryEmpty"]);
 		            	$("#resultQuery").html(data["resultQuery"]);
 		            }
 				});
@@ -45,8 +63,12 @@
 		<span>Common search:</span>
 		<br/>
 		<form action="search-offers" method="get">
-			<input type="text" value="${query}" name="query" /> 
-			<input type="submit" value="Search" />
+			<div>
+				<input type="text" value="${query}" name="query" /> 
+			</div>
+			<div>
+				<input type="submit" value="Search" />
+			</div>
 		</form>
 	</div>
 	<hr/>
@@ -75,7 +97,12 @@
 		</form>
 	</div>
 	<div>
-		<span id="resultQuery"></span>
+		<span id="resultQuery">${resultQuery}</span>
+	</div>
+	<div>
+		<form action="search-offers" method="get">
+			<input type="submit" value="Search" />
+		</form>
 	</div>
 	<hr/>
 	<div>
