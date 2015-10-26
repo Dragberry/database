@@ -18,8 +18,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import by.bsuir.drahun.database.application.SpringConfiguration;
 import by.bsuir.drahun.database.business.OfferService;
 import by.bsuir.drahun.database.model.ProductBean;
 import by.bsuir.drahun.database.model.TableModel;
@@ -29,7 +31,7 @@ public class DatabaseFrame extends JFrame {
 
 	private static final long serialVersionUID = 3380081745406355225L;
 
-	private ClassPathXmlApplicationContext context;
+	private ConfigurableApplicationContext context;
 
 	private SearchPanel searchPanel;
 
@@ -40,7 +42,9 @@ public class DatabaseFrame extends JFrame {
 	private List<ProductBean> resultList;
 
 	public void init() {
-		context = new ClassPathXmlApplicationContext("applicationContext.xml");
+//		context = new ClassPathXmlApplicationContext("applicationContext.xml");
+		
+		context = new AnnotationConfigApplicationContext(SpringConfiguration.class);
 		fetchInitializationData();
 		setMinimumSize(new Dimension(1024, 768));
 		setTitle("Database Client");
@@ -115,7 +119,7 @@ public class DatabaseFrame extends JFrame {
 		});
 	}
 
-	public ClassPathXmlApplicationContext getContext() {
+	public ConfigurableApplicationContext getContext() {
 		return context;
 	}
 
