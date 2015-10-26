@@ -35,6 +35,7 @@ public class SpringConfiguration {
 	private static final String PROPERTY_NAME_DATABASE_PASSWORD = "db.password";
 	
 	private static final String PROPERTY_NAME_DATABASE_DIALECT = "db.dialect";
+	private static final String PROPERTY_NAME_DATABASE_SHOW_SQL = "db.showSql";
 	
 	@Autowired
 	private Environment env;
@@ -61,7 +62,7 @@ public class SpringConfiguration {
 	@Bean
 	public JpaVendorAdapter jpaVendorAdapter() {
 		HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
-		hibernateJpaVendorAdapter.setShowSql(true);
+		hibernateJpaVendorAdapter.setShowSql(env.getRequiredProperty(PROPERTY_NAME_DATABASE_SHOW_SQL, Boolean.class));
 		hibernateJpaVendorAdapter.setDatabasePlatform(env.getRequiredProperty(PROPERTY_NAME_DATABASE_DIALECT));
 		return hibernateJpaVendorAdapter;
 	}

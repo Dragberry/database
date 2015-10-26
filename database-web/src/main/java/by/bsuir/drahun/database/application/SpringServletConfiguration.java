@@ -22,7 +22,7 @@ import by.bsuir.drahun.database.controller.ControllerComponents;
 @EnableWebMvc
 @Import(SpringConfiguration.class)
 @ComponentScan(basePackageClasses = ControllerComponents.class)
-public class ServletConfiguration extends WebMvcConfigurationSupport {
+public class SpringServletConfiguration extends WebMvcConfigurationSupport {
 	
 	@Override
 	protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
