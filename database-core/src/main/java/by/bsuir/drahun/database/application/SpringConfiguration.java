@@ -1,6 +1,5 @@
 package by.bsuir.drahun.database.application;
 
-import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.SharedEntityManagerCreator;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -29,6 +27,8 @@ import by.bsuir.drahun.database.dao.DaoComponents;
 })
 public class SpringConfiguration {
 
+	private static final String STORAGE_PERSISTENCE_UNIT = "storage";
+	
 	private static final String PROPERTY_NAME_DATABASE_DRIVER = "db.driver";
 	private static final String PROPERTY_NAME_DATABASE_URL = "db.url";
 	private static final String PROPERTY_NAME_DATABASE_USERNAME = "db.userName";
@@ -53,7 +53,7 @@ public class SpringConfiguration {
      public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
              LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
              entityManagerFactoryBean.setDataSource(dataSource());
-             entityManagerFactoryBean.setPersistenceUnitName("storage");
+             entityManagerFactoryBean.setPersistenceUnitName(STORAGE_PERSISTENCE_UNIT);
              entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter());
              return entityManagerFactoryBean;
      }
@@ -74,9 +74,5 @@ public class SpringConfiguration {
 		return transactionManager;
 	}
 	
-	@Bean
-	public EntityManager entityManager() {
-		return SharedEntityManagerCreator.createSharedEntityManager(entityManagerFactory().getObject());
-	}
 
 }
