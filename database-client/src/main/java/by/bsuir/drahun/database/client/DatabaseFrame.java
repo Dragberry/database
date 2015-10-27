@@ -1,5 +1,6 @@
 package by.bsuir.drahun.database.client;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,9 +19,9 @@ public class DatabaseFrame extends JFrame {
 
 	private JMenuBar menuBar;
 	
-	private ScreenComponent listScreen = new ListPanel();
+	private ScreenComponent listScreen;
 	
-	private ScreenComponent createScreen = new CreatePanel();
+	private ScreenComponent createScreen;
 
 	public void init() {
 		setMinimumSize(new Dimension(1024, 768));
@@ -44,7 +45,7 @@ public class DatabaseFrame extends JFrame {
 	
 	public ScreenComponent getCreateScreen() {
 		if (createScreen == null) {
-			createScreen = new ListPanel();
+			createScreen = new CreatePanel();
 		}
 		return createScreen;
 	}
@@ -60,25 +61,8 @@ public class DatabaseFrame extends JFrame {
 			JMenuItem exitItem = new JMenuItem("Exit");
 			newMenu.add(exitItem);
 			
-			createOfferItem.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					getContentPane().removeAll();
-					getContentPane().add((JPanel)getCreateScreen());
-					repaint();
-				}
-			});
-
-			offerListItem.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					getContentPane().removeAll();
-					getContentPane().add((JPanel)getListScreen());
-					repaint();
-				}
-			});
+			createOfferItem.addActionListener(new MenuNavigationListener((Component) getCreateScreen()));
+			offerListItem.addActionListener(new MenuNavigationListener((Component) getListScreen()));
 			
 			exitItem.addActionListener(new ActionListener() {   
 				
@@ -87,9 +71,27 @@ public class DatabaseFrame extends JFrame {
 	                System.exit(0);             
 	            }           
 	        });
+			
 			menuBar.add(newMenu);
 		}
 		return menuBar;
+	}
+	
+	private class MenuNavigationListener implements ActionListener {
+		
+		private Component component;
+
+		private MenuNavigationListener(Component component) {
+			this.component = component;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			getContentPane().removeAll();
+			getContentPane().add(component);
+			repaint();
+		}
+		
 	}
 
 
