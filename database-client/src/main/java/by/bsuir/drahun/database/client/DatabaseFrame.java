@@ -1,166 +1,97 @@
 package by.bsuir.drahun.database.client;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.List;
-
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import by.bsuir.drahun.database.application.SpringConfiguration;
-import by.bsuir.drahun.database.business.OfferService;
-import by.bsuir.drahun.database.model.ProductBean;
-import by.bsuir.drahun.database.model.TableModel;
-import by.bsuir.drahun.database.query.ProductOfferQuery;
+import by.bsuir.drahun.database.client.context.ContextProvider;
 
 public class DatabaseFrame extends JFrame {
 
 	private static final long serialVersionUID = 3380081745406355225L;
 
-	private ConfigurableApplicationContext context;
-
-	private SearchPanel searchPanel;
-
-	private JPanel resultPanel;
-
-	private JTable resultTable;
-
-	private List<ProductBean> resultList;
+	private JMenuBar menuBar;
+	
+	private ScreenComponent listScreen = new ListPanel();
+	
+	private ScreenComponent createScreen = new CreatePanel();
 
 	public void init() {
-//		context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		
-		context = new AnnotationConfigApplicationContext(SpringConfiguration.class);
-		fetchInitializationData();
 		setMinimumSize(new Dimension(1024, 768));
 		setTitle("Database Client");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		setJMenuBar(getMenu());
+		
+		getContentPane().add((JPanel)getListScreen());
 
-		GridBagConstraints gbcTop = new GridBagConstraints();
-		gbcTop.gridx = 0;
-		gbcTop.gridy = 0;
-		gbcTop.weightx = 1.0;
-		gbcTop.fill = GridBagConstraints.HORIZONTAL;
-		gbcTop.insets = new Insets(10, 10, 10, 10);
-
-		GridBagConstraints gbcBottom = new GridBagConstraints();
-		gbcBottom.gridx = 0;
-		gbcBottom.gridy = 1;
-		gbcBottom.gridheight = 1;
-		gbcBottom.fill = GridBagConstraints.BOTH;
-		gbcBottom.weightx = 1.0;
-		gbcBottom.weighty = 1.0;
-		gbcBottom.insets = new Insets(10, 10, 10, 10);
-
-		getContentPane().setLayout(new GridBagLayout());
-		getContentPane().add(getSearchPanel(), gbcTop);
-		getContentPane().add(getResultPanel(), gbcBottom);
 		setVisible(true);
 		addWindowListener(new WindowListenerImpl());
-		addActionListeners();
-	}
-
-	private void fetchInitializationData() {
-		String query = null;
-		doSearch(query);
 	}
 	
-	private void doSearch(ProductOfferQuery query) {
-		OfferService offerService = getContext().getBean(OfferService.class);
-		resultList = offerService.fetchOffers(query);
-	}
-
-	private void doSearch(String query) {
-		OfferService offerService = getContext().getBean(OfferService.class);
-		resultList = offerService.fetchOffers(query);
-	}
-
-	private void addActionListeners() {
-		getSearchPanel().getCommonSearchBtn().addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				String query = getSearchPanel().getCommonSearchField().getText();
-				doSearch(query);
-				resultTable.setModel(new TableModel(resultList));
-				resultPanel.repaint();
-				repaint();
-			}
-		});
-		
-		getSearchPanel().getSearchBtn().addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				doSearch(getSearchPanel().getOfferQuery());
-				resultTable.setModel(new TableModel(resultList));
-				resultPanel.repaint();
-				repaint();
-			}
-		});
-		
-        getSearchPanel().getAddConditionBtn().addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				getSearchPanel().addCondtion();
-			}
-		});
-	}
-
-	public ConfigurableApplicationContext getContext() {
-		return context;
-	}
-
-	private SearchPanel getSearchPanel() {
-		if (searchPanel == null) {
-			searchPanel = new SearchPanel();
+	public ScreenComponent getListScreen() {
+		if (listScreen == null) {
+			listScreen = new ListPanel();
 		}
-		return searchPanel;
+		return listScreen;
+	}
+	
+	public ScreenComponent getCreateScreen() {
+		if (createScreen == null) {
+			createScreen = new ListPanel();
+		}
+		return createScreen;
 	}
 
-	private JPanel getResultPanel() {
-		if (resultPanel == null) {
-			resultPanel = new JPanel();
-			resultPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-			resultPanel.setLayout(new GridBagLayout());
+	private JMenuBar getMenu() {
+		if (menuBar == null) {
+			menuBar = new JMenuBar();
+			JMenu newMenu = new  JMenu("Menu");
+			JMenuItem offerListItem = new JMenuItem("Offer list");
+			newMenu.add(offerListItem);
+			JMenuItem createOfferItem = new JMenuItem("Create offer");
+			newMenu.add(createOfferItem);
+			JMenuItem exitItem = new JMenuItem("Exit");
+			newMenu.add(exitItem);
 			
-			GridBagConstraints gbcLabel = new GridBagConstraints();
-			gbcLabel.gridx = 0;
-			gbcLabel.gridy = 0;
-			gbcLabel.weightx = 1.0;
-			gbcLabel.fill = GridBagConstraints.HORIZONTAL;
+			createOfferItem.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					getContentPane().removeAll();
+					getContentPane().add((JPanel)getCreateScreen());
+					repaint();
+				}
+			});
+
+			offerListItem.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					getContentPane().removeAll();
+					getContentPane().add((JPanel)getListScreen());
+					repaint();
+				}
+			});
 			
-			resultPanel.add(new JLabel("Searc result:"), gbcLabel);
-			
-			GridBagConstraints gbcTable = new GridBagConstraints();
-			gbcTable.gridx = 0;
-			gbcTable.gridy = 1;
-			gbcTable.gridheight = 1;
-			gbcTable.fill = GridBagConstraints.BOTH;
-			gbcTable.weightx = 1.0;
-			gbcTable.weighty = 1.0;
-			
-			resultTable = new JTable(new TableModel(resultList));
-			resultTable.setPreferredScrollableViewportSize(resultTable.getPreferredSize());
-			resultTable.setFillsViewportHeight(true);
-			JScrollPane scrollPane = new JScrollPane(resultTable);
-			
-			resultPanel.add(scrollPane, gbcTable);
+			exitItem.addActionListener(new ActionListener() {   
+				
+				@Override
+	            public void actionPerformed(ActionEvent e) {
+	                System.exit(0);             
+	            }           
+	        });
+			menuBar.add(newMenu);
 		}
-		return resultPanel;
+		return menuBar;
 	}
+
 
 	private class WindowListenerImpl implements WindowListener {
 
@@ -168,7 +99,7 @@ public class DatabaseFrame extends JFrame {
 		}
 
 		public void windowClosing(WindowEvent e) {
-			getContext().close();
+			ContextProvider.getContext().close();
 		}
 
 		public void windowClosed(WindowEvent e) {
