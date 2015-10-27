@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -11,6 +14,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import by.bsuir.drahun.database.business.OfferService;
+import by.bsuir.drahun.database.client.context.ContextProvider;
+import by.bsuir.drahun.database.domain.Product;
+import by.bsuir.drahun.database.domain.ProductOffer;
 import by.bsuir.drahun.database.util.GridBagConstraintsCreator;
 
 public class CreatePanel extends JPanel implements ScreenComponent {
@@ -52,6 +59,44 @@ public class CreatePanel extends JPanel implements ScreenComponent {
 		add(getQuantityField(), GridBagConstraintsCreator.create(1, 3, 0.5, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5)));
 		
 		add(getCreateButton(), GridBagConstraintsCreator.create(1, 5, 1, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5)));
+		
+		addActionListeners();
+	}
+
+	private void addActionListeners() {
+		getCreateButton().addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Product product = new Product();
+					product.setProductCode(getCodeField().getText());
+					product.setProductTitle(getTitleField().getText());
+					ProductOffer offer = new ProductOffer();
+					offer.setProduct(product);
+					offer.setCost(new BigDecimal(getCostField().getText()));
+					offer.setQuantity(Integer.valueOf(getQuantityField().getText()));
+					ContextProvider.getContext().getBean(OfferService.class).saveOffer(offer);
+					resetScreen();
+					showSuccesMessage();
+				} catch (Exception ex) {
+					showErrorMessage();
+				}
+			}
+
+			private void showErrorMessage() {
+				
+			}
+
+			private void showSuccesMessage() {
+				
+			}
+
+			private void resetScreen() {
+				
+			}
+		});
+		
 	}
 
 	public JLabel getTitleLabel() {
