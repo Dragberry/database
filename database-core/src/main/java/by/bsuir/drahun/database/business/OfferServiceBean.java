@@ -1,5 +1,6 @@
 package by.bsuir.drahun.database.business;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,9 @@ import by.bsuir.drahun.database.model.ProductBean;
 import by.bsuir.drahun.database.query.ProductOfferQuery;
 
 @Service
-public class OfferServiceBean implements OfferService {
+public class OfferServiceBean implements OfferService, Serializable {
+	
+	private static final long serialVersionUID = -596241181362305197L;
 	
 	@Autowired
 	private ProductOfferDao productOfferDao;
