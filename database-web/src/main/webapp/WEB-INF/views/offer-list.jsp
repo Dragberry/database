@@ -128,5 +128,7 @@
 			</c:forEach>
 		</table>
 	</div>
+	<hr />
+	<a href="${pageContext.request.contextPath}">Home</a>
 </body>
 </html>

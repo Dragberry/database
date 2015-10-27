@@ -17,7 +17,7 @@
 		</init-param>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>by.bsuir.drahun.database.application.ServletConfiguration</param-value>
+			<param-value>by.bsuir.drahun.database.application.SpringServletConfiguration</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>

@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import by.bsuir.drahun.database.business.OfferService;
+import by.bsuir.drahun.database.domain.Product;
+import by.bsuir.drahun.database.domain.ProductOffer;
 import by.bsuir.drahun.database.json.AddConditionResult;
 import by.bsuir.drahun.database.model.ProductBean;
 import by.bsuir.drahun.database.query.Condition;
@@ -42,7 +45,7 @@ public class DatabaseController implements Serializable {
 	private String[] fields = ProductOfferQuery.FIELDS;
 	
 	@Autowired
-	private OfferService offerServise;
+	private OfferService offerService;
 	
 	@RequestMapping("/")
 	public String getDatabasePage() {
@@ -50,9 +53,28 @@ public class DatabaseController implements Serializable {
 		return "index";
 	}
 	
+	@RequestMapping(value = "/create-offer", method = RequestMethod.GET)
+	public ModelAndView getCreateOfferPage() {
+		return new ModelAndView("create-offer", "command", new ProductBean());
+	}
+	
+	@RequestMapping(value = "/create-offer", method = RequestMethod.POST)
+	public ModelAndView createOffer(@ModelAttribute("productBean")ProductBean productBean, ModelAndView model) {
+		Product product = new Product();
+		product.setProductCode(productBean.getProductCode());
+		product.setProductTitle(productBean.getProductTitle());
+		ProductOffer offer = new ProductOffer();
+		offer.setProduct(product);
+		offer.setCost(productBean.getCost());
+		offer.setQuantity(productBean.getQuantity());
+		offerService.saveOffer(offer);
+		return getOfferList(model);
+	}
+	
+	
 	@RequestMapping(value = "/search-offers", method = RequestMethod.GET, params = {"query"})
 	public ModelAndView getOfferList(@RequestParam("query") String query, ModelAndView model, HttpServletRequest request) {
-		List<ProductBean> offerList = offerServise.fetchOffers(query);
+		List<ProductBean> offerList = offerService.fetchOffers(query);
 	    model.addObject("offerList", offerList);
 	    model.setViewName("offer-list");
 	    model.addObject("operatorList", operators);
@@ -66,7 +88,7 @@ public class DatabaseController implements Serializable {
 	
 	@RequestMapping(value = "/search-offers", method = RequestMethod.GET)
 	public ModelAndView getOfferList(ModelAndView model, HttpServletRequest request) {
-		List<ProductBean> offerList = offerServise.fetchOffers(offerQuery);
+		List<ProductBean> offerList = offerService.fetchOffers(offerQuery);
 	    model.addObject("offerList", offerList);
 	    model.setViewName("offer-list");
 	    model.addObject("operatorList", operators);
@@ -79,7 +101,7 @@ public class DatabaseController implements Serializable {
 	
 	@RequestMapping("/offer-list")
 	public ModelAndView getOfferList(ModelAndView model) {
-		List<ProductBean> offerList = offerServise.fetchOffers(new ProductOfferQuery());
+		List<ProductBean> offerList = offerService.fetchOffers(new ProductOfferQuery());
 	    model.addObject("offerList", offerList);
 	    model.addObject("operatorList", operators);
 	    model.addObject("conditionList", conditions);
