@@ -1,6 +1,6 @@
 package by.bsuir.drahun.database.client;
 
-import java.awt.Component;
+import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +14,10 @@ import javax.swing.JPanel;
 import by.bsuir.drahun.database.client.context.ContextProvider;
 
 public class DatabaseFrame extends JFrame {
+
+	private static final String CREATE_SCREEN_ID = "Create";
+
+	private static final String LIST_SCREEN_ID = "List";
 
 	private static final long serialVersionUID = 3380081745406355225L;
 
@@ -30,7 +34,9 @@ public class DatabaseFrame extends JFrame {
 		
 		setJMenuBar(getMenu());
 		
-		getContentPane().add((JPanel)getListScreen());
+		getContentPane().setLayout(new CardLayout());
+		getContentPane().add((JPanel)getListScreen(), LIST_SCREEN_ID);
+		getContentPane().add((JPanel)getCreateScreen(), CREATE_SCREEN_ID);
 
 		setVisible(true);
 		addWindowListener(new WindowListenerImpl());
@@ -61,8 +67,8 @@ public class DatabaseFrame extends JFrame {
 			JMenuItem exitItem = new JMenuItem("Exit");
 			newMenu.add(exitItem);
 			
-			createOfferItem.addActionListener(new MenuNavigationListener((Component) getCreateScreen()));
-			offerListItem.addActionListener(new MenuNavigationListener((Component) getListScreen()));
+			createOfferItem.addActionListener(new MenuNavigationListener(CREATE_SCREEN_ID));
+			offerListItem.addActionListener(new MenuNavigationListener(LIST_SCREEN_ID));
 			
 			exitItem.addActionListener(new ActionListener() {   
 				
@@ -79,21 +85,18 @@ public class DatabaseFrame extends JFrame {
 	
 	private class MenuNavigationListener implements ActionListener {
 		
-		private Component component;
+		private String id;
 
-		private MenuNavigationListener(Component component) {
-			this.component = component;
+		private MenuNavigationListener(String id) {
+			this.id = id;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			getContentPane().removeAll();
-			getContentPane().add(component);
-			repaint();
+			((CardLayout) getContentPane().getLayout()).show(getContentPane(), id);
 		}
 		
 	}
-
 
 	private class WindowListenerImpl implements WindowListener {
 

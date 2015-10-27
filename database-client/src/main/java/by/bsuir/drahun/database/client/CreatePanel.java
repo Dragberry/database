@@ -50,6 +50,8 @@ public class CreatePanel extends JPanel implements ScreenComponent {
 		
 		add(getQuantityLabel(), GridBagConstraintsCreator.create(0, 3, 0.5, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5)));
 		add(getQuantityField(), GridBagConstraintsCreator.create(1, 3, 0.5, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5)));
+		
+		add(getCreateButton(), GridBagConstraintsCreator.create(1, 5, 1, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5)));
 	}
 
 	public JLabel getTitleLabel() {
@@ -109,6 +111,9 @@ public class CreatePanel extends JPanel implements ScreenComponent {
 	}
 
 	public JButton getCreateButton() {
+		if (createButton == null) {
+			createButton = new JButton("Create");
+		}
 		return createButton;
 	}
 
